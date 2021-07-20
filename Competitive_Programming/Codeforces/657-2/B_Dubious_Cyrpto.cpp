@@ -54,75 +54,23 @@ namespace number_theory{
 using namespace number_theory;
 // ----------------------------------------------------------------------------------------------------------------------//
 
-
-// C++ program to find a pair with the given difference
-#include <bits/stdc++.h>
-using namespace std;
-
-// The function assumes that the array is sorted
-pair<int,int> findPair(vi &arr, int size, int n)
-{   
-    pi ans = {0,0};
-
-	// Initialize positions of two elements
-	int i = 0;
-	int j = 1;
-
-	// Search for a pair
-	while (i < size && j < size)
-	{
-		if (i != j && arr[j] - arr[i] == n)
-		{   
-			ans = {arr[i], arr[j]};
-			return ans;
-		}
-		else if (arr[j]-arr[i] < n)
-			j++;
-		else
-			i++;
-	}
-
-
-	return ans;
-}
-
-
 void solve() {
   int l,r,m; cin >> l >> r >> m;
-
-  vi inp;
+  int diff = r-l; int a,b,c;
   fr(i,l,r){
-      inp.pb(i);
+      // m = n*a + (b-c)
+      // Try all the possible values of `a` (i) here & find out the reminder with m.
+      // We can form `m` with adding reminder or subtracting reminder to n*a. 
+      int m1 = m%i, m2 = i-m1; 
+      if (i <= m and m1 <= diff){ // Adding reminder case
+          a = i; b = r; c = r-m1; break;
+      }
+      else if (m2 <= diff){       // Subtracting reminder case
+          a = i; b = r-m2; c = r; break;
+      }
   }
-    
-    vi results;
-  
-   int maxy = r-l;
-   fr(i,l,r){
-       
-       int a = i;
-       int k = 1;
-       while (  (a*k -  m) <= maxy ){
-
-            auto res = findPair(inp,(r-l+1), (a*k-m));
-
-            if (res.fi !=0 and res.se != 0){
-                results = {a, res.fi, res.se};
-                break;
-            }
-
-           k++;
-
-       }
-
-   }  
-
-
-   trav(e,results){
-       cout << e << " ";
-   }
-
-
+  // For more clarity, Dry run with sample testcase. Then the reason why i <= m will also be clear.
+  cout << a << " " << b << " " << c << endl;
 }
 
 signed main() {

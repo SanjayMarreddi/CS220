@@ -1250,6 +1250,7 @@ Pass by reference `&`, otherwise it may lead to TLE.
 - Dont get confused with `Ternary Operator expression` in C++. It is `Expression = ( Conditional ) ? Value1 : Value2 `. If conditional is True, Value1 is assigned to expression, else Value2.
 - Basic techniques like Two Pointers, Sliding Window are helpful for reducing O(n^2) or more complex solutions to O(n) easily in many problems. 
 - To deal with string character frequencies, We can use their ascii values ( `cnt[s[i]]++` ) instead of `cnt[s[i]-'0']++ or cnt[s[i]-'a']++`
+- When we are supposed to find the maximum / minimum in O(1) time instead of O(N), we can do it using prefix & suffix arrays. [Example](https://leetcode.com/contest/weekly-contest-250/problems/maximum-number-of-points-with-cost/)
 
 # Maths:
 
