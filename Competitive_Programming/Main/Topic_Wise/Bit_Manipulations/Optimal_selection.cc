@@ -70,12 +70,12 @@ void solve() {
 
                 // Check if the element is present in the current subset
                 if ( s &  (1 << x) ){
-                        dp[s][d] = min( dp[s][d],  dp[s^(1 << x)][d-1]  + price[x][d]);
+                        dp[s][d] = min( dp[s][d],  dp[(s^(1 << x))][d-1]  + price[x][d]);
 
                 }
             }
 
-            deb3(s,d,dp[s][d]);
+            //deb3(s,d,dp[s][d]);
         }
     }
 

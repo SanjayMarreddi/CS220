@@ -977,8 +977,23 @@ DP Notes :
 Even DP gives TLE/ Memory Limit Exceeded. In those cases, Either Memory efficient DP (usually Bottom up with clever space optimisation) may help. Even if that fails/ unable to make it a Space efficient one, Try GREEDY approach. It really solves problems in such scenarios. In some cases, Just Observation of the exact logic & using bruteforce works even better. Example [here.](https://codeforces.com/contest/1485/problem/B)
 - In some DP problems, We might encounter most famous recurrences like Fibonacci, Catalan. They are hidden inside the Problem. If we carefully analyse, we can very easily solve them. [Example](https://codeforces.com/contest/1245/submission/120350792). 
 So, be thorough with all the standard/classic DP Problems. All the remaining are just the variants of these!!
+- DP with Strings/Arrays:
+  Subproblems are usually -> Prefixes [ Top.sort order: 0,1....n-1 ],
+                          -> Suffixes [ Top.sort order: n-1,n-2,...0 ],
+                          -> Subarrays[ Top.sort order: increasing order of sizes of subarrays ], 
+                          -> Subsets ( using Bitmasks )
+                           
+- DP subproblems when dealing with subsequences/substrings/subarrays:
+    DP[i] -> Required quantity for the subsequences/substrings/subarrays that END/BEGIN at index `i` 
 
-
+- When ever we have more parameters in DP_states, try to think in a way similar to `/CP/References/DP_Notes_MIT/MIT6_006F11_lec22.pdf  Page-2`
+- Sometimes, DP problem seems very difficult to solve. They may be asking to find the set of quantities that give the maximum/ minium result. In such cases, First solve the problem of a simpler DP which is just finding the maximum result value first. Then we can just use the Parent pointer sort of thing using argmin/argmax and construct the entire required solution. 
+- In Bitmasks DP problems, One standard trick we use to evaluate `(S\x)` i.e. removing element `x` from the subset `S` given that `S` contains `x` is as follows:
+    ```
+    if ( S & (1 << x) ){
+        int newsubset =  ( S^(1 << x ) );
+    }
+    ```
 - If we are sure that, all the quantities are positive & they are very large, we can use , `unsigned long long` instead of `long long`
 - If we declare Vector with Initialisation in Global & take size of vector from INPUT in the Local Function, It gives unexpected errors since `n` gets random value in the beginning & the corresponding sized vector may be created.
    ```
@@ -1246,11 +1261,12 @@ Pass by reference `&`, otherwise it may lead to TLE.
     string str;
     getline(cin, str);
     ```
--  Most of the `parenthesis matching` problems can be solved by just tracking the count of Opening & Closing parenthesis & coutning valid sets every time they encounter a CLOSING BRACKET. Also sometimes, Stacks/queues may be useful.
+-  Most of the `parenthesis matching` problems can be solved by just tracking the count of Opening & Closing parenthesis & counting valid sets every time they encounter a CLOSING BRACKET. Also sometimes, Stacks/queues may be useful.
 - Dont get confused with `Ternary Operator expression` in C++. It is `Expression = ( Conditional ) ? Value1 : Value2 `. If conditional is True, Value1 is assigned to expression, else Value2.
 - Basic techniques like Two Pointers, Sliding Window are helpful for reducing O(n^2) or more complex solutions to O(n) easily in many problems. 
 - To deal with string character frequencies, We can use their ascii values ( `cnt[s[i]]++` ) instead of `cnt[s[i]-'0']++ or cnt[s[i]-'a']++`
 - When we are supposed to find the maximum / minimum in O(1) time instead of O(N), we can do it using prefix & suffix arrays. [Example](https://leetcode.com/contest/weekly-contest-250/problems/maximum-number-of-points-with-cost/)
+- Many problems can be solved using LPS array used in KMP algorithm. Mostly that deal with prefix & suffix substrings equality like Palindromic property,etc. Example: `Competitive_Programming\Main\Topic_Wise\String_Algorithms\Problems\Min_Chars_remov_Palindrome.cc` 
 
 # Maths:
 
@@ -1312,3 +1328,5 @@ GCD Properties :
 
 - When answer is P/Q, we are usually asked to print, `P * Q^(−1) modulo 10^9+7, where Q^(−1) is the multiplicative inverse of Q modulo 10^9+7`
   To find, Multiplicative inverse of Q modulo M  use `Q_inv =  modpow(Q, M-2)`
+
+- Also, Many problems which take O(n^2) in bruteforce can cleverly be brought down to O(n) by performing Two traversals, One from `right to Left` & other one from `Left to right` & similar ways.
