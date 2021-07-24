@@ -47,13 +47,13 @@ bool match(string s, string p){
     ll s_len = s.size();
     ll p_len =  p.size();
 
-    vvl dp(p_len +1, vl(s_len+1, 0));  // dp[i][j] indicates if s[i:] and p[i:] matches.
+    vvl dp(p_len +1, vl(s_len+1, 0));  // dp[i][j] indicates if p[i:] and s[j:] matches.
 
     frr(i, p_len, 0 ){
 
         frr(j, s_len, 0){
             
-            // Base case
+            // Base case ( Empty strings match )
             if ( i == p_len and j == s_len){
                 dp[i][j] = 1;
             }

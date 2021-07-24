@@ -50,7 +50,9 @@ restriction that when both the characters are same, they shouldn’t be on the s
 int common_subseq(string str, vvl &dp)
 {
     int n = str.length();
-  
+    
+    // dp[i][j]  contains length of LCS of str[0..i-1] and str[0..j-1] with the condition that when both the characters are same, they shouldn’t be on the same index in the two strings.
+
     // Fill dp table (similar to LCS loops)
     for (int i=1; i<=n; i++)
     {

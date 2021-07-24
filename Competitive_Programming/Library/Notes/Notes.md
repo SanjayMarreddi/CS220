@@ -994,6 +994,11 @@ So, be thorough with all the standard/classic DP Problems. All the remaining are
         int newsubset =  ( S^(1 << x ) );
     }
     ```
+- In DP, Dont think that all similar problems have exactly same recurrences, They might look exactly similar but might differ at one corner depending on the problem, which makes your solution as complete wrong. So, be very careful while constructing a Recurrence. 
+Example: 
+`Main\Problem_Solving_Paradigms\3. DP\Practise_IB_Hubs_Rec_Mem\1.Coin_Change.cc  LINE 85`
+vs `Main\Problem_Solving_Paradigms\3. DP\Practise_IB_Hubs_Rec_Mem\3.Check_Subset_Sum_Iter.cc  LINE 69`
+
 - If we are sure that, all the quantities are positive & they are very large, we can use , `unsigned long long` instead of `long long`
 - If we declare Vector with Initialisation in Global & take size of vector from INPUT in the Local Function, It gives unexpected errors since `n` gets random value in the beginning & the corresponding sized vector may be created.
    ```

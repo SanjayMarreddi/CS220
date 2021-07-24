@@ -55,7 +55,7 @@ bool is_divisible(ll n, ll k, vl &v, vvl &dp){
     
     */
 
-   // dp[i][j] = 1 means that we can construct a sum using indices 0,1,2,.. i-1 that has remainder of j when divided by k.
+   // dp[i][j] = 1 means that we can construct a sum using indices 0,1,2,.. i that has remainder of j when divided by k.
 
     dp[0][v[0]%k] = 1;
 
@@ -68,16 +68,17 @@ bool is_divisible(ll n, ll k, vl &v, vvl &dp){
             // If the  ( (value of the expression till previous position) % k ) is `j` 
             if (dp[i-1][j] ){
                 
-                /* Note that since we are interested in only reminders, 
-                We are just adding/ subtracting to (j+k) since 
-                the actual number doesnot matter when modulo is done.
-                abs() is taken to keep it in accordance with the indices of our DP*/
+                /* In C++, reminder in case of negative numbers
+                is negative Ex: -15%4 == -3. To make it positive, we used abs().
+                Also, after addding/subtracting the current reminder (v[i]%k) to 
+                the earlier reminder, we need to take %k again to get actual 
+                reminder that we get when we deal with actual expressions.
+                */
 
                 // Putting ones in both the possible remainders pos.
+                dp[i][ ( j  + v[i] % k ) % k  ] = 1;          // We can add
 
-                dp[i][  abs ( ( (j +k) + v[i] ) % k ) ] = 1;   // We can add
-
-                dp[i][  abs ( ( (j +k) - v[i] ) % k ) ] = 1;   // We can subtract
+                dp[i][ ( abs ( j - v[i] % k ) ) % k  ] = 1;   // We can subtract
 
             }
 

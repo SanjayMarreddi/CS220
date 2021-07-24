@@ -49,7 +49,9 @@ For example, “abc”, “abg”, “bdf”, “aeg”, ‘”acefg”, .. etc 
 string longest_common_subseq(string a, string b, vvl &dp)
 {
     ll n = a.size(); ll m = b.size();
-  
+
+    // dp[i][j]  contains length of LCS of a[0..i-1] and b[0..j-1]
+     
     // Fill dp table
     for (ll i=1; i<=n; i++)
     {
@@ -70,7 +72,7 @@ string longest_common_subseq(string a, string b, vvl &dp)
     ll i = n, j = m;
     while (i > 0 && j > 0)
     {
-        // Same element but diff indices.
+        // Same element.
         if (dp[i][j] == dp[i - 1][j - 1] + 1)
         {
             res = res + a[i-1];

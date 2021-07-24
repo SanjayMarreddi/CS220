@@ -16,7 +16,7 @@ using namespace std;
 #define ubd(a,x) upper_bound(all((a)),(x)) - (a).begin()
 #define fastIO ios_base::sync_with_stdio(0); cin.tie(0);  cout.tie(0);
 typedef long double ld;
-typedef tuple<int, int> pi;
+typedef pair<int, int> pi;
 typedef vector<pi>	vpi;
 typedef vector<int> vi;
 typedef vector<vi>	vvi;
@@ -40,7 +40,7 @@ template <typename T, typename S> ostream& operator<< (ostream& os, const map<T,
 { os << "{ "; for (auto it : v) os << it.first << " : " << it.second << ", "; os << " }\n"; return os; }
 template <typename T, typename S> ostream& operator<< (ostream& os, const multimap<T, S>& v) 
 { os << "{ "; for (auto it : v) os << it.first << " : " << it.second << ", "; os << " }\n"; return os; }
-template <typename T, typename S> ostream& operator<< (ostream& os, const tuple<T, S>& v) 
+template <typename T, typename S> ostream& operator<< (ostream& os, const pair<T, S>& v) 
 { os << "("; os << v.first << ", " << v.second << ")"; return os; }
 template <typename T> ostream& operator<< (ostream& os, priority_queue<T> p)
 { os << "[ "; while(!p.empty()){ os << p.top() << " ,"; p.pop(); } os << " ]\n"; return os; }
@@ -63,19 +63,23 @@ void solve() {
   vector<int> result = {0};
 
   // Let ans giving character is `a`.
-  vector<tuple<int,int,int>> fre; // (fre,index)
+  vector<pair<int,int>> fre; // (fre,index)
+  map<int,int> charcount;
   fr(i,0,n-1){
-      int cnt = 0;
+      int cnta = 0;
       fr(j,0, v[i].size()-1){
-          if (v[i][j] == 'a'){ cnt++; }
+          if (v[i][j] == 'a'){ cnta++; }
       }
-      fre.pb({cnt,-v[i].size() i});
+      charcount[i] =  cnta;
+      int cnt_other = v[i].size() - cnta;
+      int contr = cnta - cnt_other;
+      fre.pb({contr,i});
   }
   sort(allr(fre));
   int ans = 0; int cnta = 0; int size = 0;
   trav(e, fre){
-      size += ( v[e.se].size() - e.fi ); // no of other elements
-      cnta += e.fi;
+      size += ( v[e.se].size() -charcount[e.se] ); // no of other elements
+      cnta += charcount[e.se];
       if (cnta <= size){
           break;
       }  
@@ -85,19 +89,23 @@ void solve() {
 
 
   // Let ans giving character is `b`.
-  vector<tuple<int,int>> freb; // (fre,index)
+  vector<pair<int,int>> freb; // (fre,index)
+  map<int,int> charcountb;
   fr(i,0,n-1){
       int cntb = 0;
       fr(j,0, v[i].size()-1){
           if (v[i][j] == 'b'){ cntb++; }
       }
-      freb.pb({cntb, i});
+      charcountb[i] =  cntb;
+      int cnt_other = v[i].size() - cntb;
+      int contr = cntb - cnt_other;
+      freb.pb({contr,i});
   }
   sort(allr(freb));
   int ansb = 0; int cntb = 0; int sizeb = 0;
   trav(e, freb){
-      sizeb += ( v[e.se].size() - e.fi ); // no of other elements
-      cntb += e.fi;
+      sizeb += ( v[e.se].size() -charcountb[e.se] ); // no of other elements
+      cntb += charcountb[e.se];
       if (cntb <= sizeb){
           break;
       }  
@@ -105,21 +113,25 @@ void solve() {
   }
   result.pb(ansb);
 
+
     // Let ans giving character is `c`.
-  vector<tuple<int,int>> frec; // (fre,index)
+  vector<pair<int,int>> frec; // (fre,index)
+  map<int,int> charcountc;
   fr(i,0,n-1){
       int cntc = 0;
       fr(j,0, v[i].size()-1){
           if (v[i][j] == 'c'){ cntc++; }
       }
-      frec.pb({cntc, i});
+      charcountc[i] =  cntc;
+      int cnt_other = v[i].size() - cntc;
+      int contr = cntc - cnt_other;
+      frec.pb({contr,i});
   }
   sort(allr(frec));
-  dbg(frec);
   int ansc = 0; int cntc = 0; int sizec = 0;
   trav(e, frec){
-      sizec += ( v[e.se].size() - e.fi ); // no of other elements
-      cntc += e.fi;
+       sizec += ( v[e.se].size() -charcountc[e.se] ); // no of other elements
+      cntc += charcountc[e.se];
       if (cntc <= sizec){
           break;
       }  
@@ -128,19 +140,23 @@ void solve() {
   result.pb(ansc);
 
 
-  vector<tuple<int,int>> fred; // (fre,index)
+  vector<pair<int,int>> fred; // (fre,index)
+   map<int,int> charcountd;
   fr(i,0,n-1){
       int cntd = 0;
       fr(j,0, v[i].size()-1){
           if (v[i][j] == 'd'){ cntd++; }
       }
-      fred.pb({cntd, i});
+      charcountd[i] =  cntd;
+      int cnt_other = v[i].size() - cntd;
+      int contr = cntd - cnt_other;
+      fred.pb({contr,i});
   }
   sort(allr(fred));
   int ansd = 0; int cntd = 0; int sized = 0;
   trav(e, fred){
-      sized += ( v[e.se].size() - e.fi ); // no of other elements
-      cntd += e.fi;
+     sized += ( v[e.se].size() -charcountd[e.se] ); // no of other elements
+      cntd += charcountd[e.se];
       if (cntd <= sized){
           break;
       }  
@@ -149,19 +165,23 @@ void solve() {
   result.pb(ansd);
 
   
-  vector<tuple<int,int>> free; // (fre,index)
+  vector<pair<int,int>> free; // (fre,index)
+   map<int,int> charcounte;
   fr(i,0,n-1){
       int cnte = 0;
       fr(j,0, v[i].size()-1){
           if (v[i][j] == 'e'){ cnte++; }
       }
-      free.pb({cnte, i});
+     charcounte[i] =  cnte;
+      int cnt_other = v[i].size() - cnte;
+      int contr = cnte - cnt_other;
+      free.pb({contr,i});
   }
   sort(allr(free));
   int anse = 0; int cnte = 0; int sizee = 0;
   trav(e, free){
-      sizee += ( v[e.se].size() - e.fi ); // no of other elements
-      cnte += e.fi;
+       sizee += ( v[e.se].size() -charcounte[e.se] ); // no of other elements
+      cnte += charcounte[e.se];
       if (cnte <= sizee){
           break;
       }  

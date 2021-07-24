@@ -42,32 +42,26 @@ template <typename T> T pw(T a,T p=M-2,T MOD=M){
 }
 
 ll max_sum_subseq( vl &v, ll k){
-
-    // dp[i] contains the maximum sum possible till ith index from end. ??
-
+    // dp[i] contains the max sum subseq that can be obtained under the
+    // given constraint among all the subsequences that begin at `i`
     ll n = v.size(); vl dp(n);
-
     frr(i, n-1,0){
-
+        // Atleast it will be equal to element at that position.
         dp[i] = v[i];
-
         for (int j = i+1;  j <= i+k and j < n ; j++){
-            
-            // Check whether the  (current element is maximum) or (summation of all possible sums within given range + current elem) is maximum.
+            // Take the max. among all the contributions
+            // of the other possible subsequences.
             dp[i] = max(dp[i], dp[j]+v[i]);
-
         }
     }
-
     // Returning the maximum sum
-    return dp[0];
+    return *max_element(all(dp));
 }
 
 void solve() {
   ll n,k ; cin >> n >> k;
   vl v(n); fr(i,0,n-1) cin >> v[i];
   cout << max_sum_subseq(v, k);
-  
 }
 
 signed main() {
