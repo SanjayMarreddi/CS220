@@ -54,6 +54,8 @@ If he takes i, then the interval becomes (i + 1, j).
 dp[i + 1][j] stores the value of B - A, so you subtract it from a[i] to get A + a[i] - B which is 
 the value for the current segment if A takes i. It is very similar for if A takes j, and you compare them to get dp[i][j].
 dp[i][j] = max(a[i] - dp[i + 1][j], a[j] - dp[i][j - 1])
+
+Extra Ref: https://www.geeksforgeeks.org/optimal-strategy-for-a-game-dp-31/
 */
 
 void solve() {

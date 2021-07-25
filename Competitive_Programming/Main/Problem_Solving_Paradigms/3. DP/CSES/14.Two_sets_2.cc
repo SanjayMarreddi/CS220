@@ -52,7 +52,7 @@ void solve() {
       ll half_sum = n*(n+1)/4;
       // We need to find no of subsets with sum as `half_sum`
       
-      // dp[i][x] = number of ways to make sum x using subsets of the numbers 1..i
+      // dp[i][x] = number of ways to make sum x using subsets of the numbers 0..i
 
       vvl dp(n, vl(half_sum+1, 0));
       
@@ -62,7 +62,6 @@ void solve() {
       // Iterating over all the Sums
       fr(x,0, half_sum){
 
-          // Iterating over all numbers except the last number `n` since we need to count pairs. 
           fr(i,1,n-1){
               
               // Include

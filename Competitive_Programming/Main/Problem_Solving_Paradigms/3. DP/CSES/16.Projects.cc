@@ -47,6 +47,7 @@ void solve() {
   cin >> n;
 
   // Compressing the number of days.
+  // we only care about days where we either start or just finished a project.
   map<int,int> compress;
   vector<int> a(n),b(n),p(n);
   for (int i = 0; i < n; i++) {
@@ -67,11 +68,13 @@ void solve() {
     project[ compress[b[i]] ].push_back( { compress[a[i]], p[i] } );
   }
 
+  // dp[i] = maximum amount of money we can earn before day i.
   vector<long long> dp(coords, 0);
-  // Iterating over all the projects.
+
+  // Iterating over all the days.
   for (int i = 0; i < coords; i++) {
 
-    // From 2nd project, we have 2 options :
+    // From 2nd day, we have 2 options :
     
     if (i > 0) {
       // 1. On day i, maybe we just did nothing.
@@ -80,6 +83,8 @@ void solve() {
     for (auto p : project[i]) {
 
       // 2. On day i, we just finished some project.
+      // We earned some money doing the project, and use dp[start of project] to know how much money 
+      // we could have earned before starting the project.
       dp[i] = max(dp[i], dp[p.first]+p.second);
     }
 

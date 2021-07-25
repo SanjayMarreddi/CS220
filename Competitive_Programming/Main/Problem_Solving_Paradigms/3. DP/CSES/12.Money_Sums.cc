@@ -71,8 +71,9 @@ void solve() {
     possible[0][0] = 1;
 
     // Notice the Topological Sorting order.
-    fr(k, 1, size){
-        fr(x,0, sum){
+    fr(x,0, sum){
+        fr(k, 1, size){
+        
             // If a weight is less than or equal to a sum we are constructing, then only that weight may be used.
             if (x - weights[k-1]  >= 0){
                 

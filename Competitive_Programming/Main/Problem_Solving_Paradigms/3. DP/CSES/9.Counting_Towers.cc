@@ -53,22 +53,41 @@ void solve() {
   dp[n+1][1] = 1;
 
   frr(i, n, 2){
-    ll op1 = ( dp[i+1][1] + dp[i+1][0] )% M;
-    ll op2 = ( dp[i+1][0] )% M;
-    ll op3 =  ( 2*dp[i+1][0] )% M;
-    ll op4 = dp[i+1][1];
+    
+     // First, lets evaluate dp[i][0]. We have 3 cases:
 
+    // 1. We are not extending any of the previous tile. So, we have 2 options, either we can keep type `0` or `1`.
+    // So we add number of ways to fill the tower from i+1 till n in both cases of having (0/1) at current position.
+    ll op1 = ( dp[i+1][1] + dp[i+1][0] )% M;
+
+    // 2. Extend both 
+    ll op2 = ( dp[i+1][0] )% M;
+    
+    // 3. Extend one of the tiles. (Symmetric in both cases)
+    ll op3 =  ( 2*dp[i+1][0] )% M;
+  
     dp[i][0] = ( (op1 + op2)%M + op3 )% M;
 
-    dp[i][1] = (op1 + op4)%M;
+    
+    // Now, lets evaluate dp[i][1]. We have 2 cases:
+    
+    // 1. We are not extending any of the previous tile. It is same as `op1`.
 
+    // 2. Extending both of these.
+    ll op4 = dp[i+1][1];
+
+    dp[i][1] = (op1 + op4)%M;
   }
   
 
   // Precomputing & printing.
   ll t ; cin >> t;
   while(t--){
-    ll q; cin >> q; // Actually, we need to print no of ways to fill postitions from 2 till q, While at 1, It can be 0/1.
+    ll q; cin >> q; 
+    
+    // If there is no precomputing the actual answer is dp[2][0] +  dp[2][1].
+
+    // Actually, we need to print no of ways to fill postitions from 2 till q, While at 1, It can be 0/1.
     cout << ( dp[1e6 - q +2][0] + dp[1e6 - q + 2][1] )%M <<  endl; 
   }
 }

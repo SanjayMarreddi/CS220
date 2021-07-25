@@ -44,6 +44,7 @@ template <typename T> T pw(T a,T p=M-2,T MOD=M){
 ll poss_arrays(vl &arr, ll n, ll m){
 
      vvl dp(n, vl(m+1, 0));  // dp[index][Value]
+     // dp[i][v] = number of ways to fill the array up to index i, if x[i] = v.
 
      if (arr[0] == 0){
         fr(i,0,m){ dp[0][i] = 1;}

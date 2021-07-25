@@ -56,34 +56,41 @@ using namespace number_theory;
 // int dp[n][n]; 
 
 void solve() {
-  // memset(dp,-1, sizeof(dp));
-  string s; cin >> s; int ew = 0, ow = 0;
+
+  string s; cin >> s; 
+  string s1 = s, s2 = s;
 
   fr(i,0,9){
-    
-      if (s[i] != '?'){
+      if (s1[i] == '?'){
           if (i%2){
-              if (s[i] == '1') ow++;
+              s1[i] = '1';
           }
           else{
-              //dbg(i, "hello");
-              if (s[i] == '1') ew++;
+              s1[i] = '0';
           }
       }
-      else{
+  }
 
+  fr(i,0,9){
+      if (s2[i] == '?'){
           if (i%2){
-              if (ow >= ew){
-                  ow++;
-              }  
+              s2[i] = '0';
           }
           else{
-               if (ew >= ow){
-                  ew++;
-              }
+              s2[i] = '1';
           }
-          
       }
+  }
+
+
+  int ew = 0, ow = 0, ans1 = 10;
+  fr(i,0,9){
+    
+    if (s1[i] == '1'){
+        if (i%2) ow++;
+        else ew++;
+    }
+
 
       // Game ends ?
       int rem = 9-i;
@@ -91,7 +98,7 @@ void solve() {
           int maxy = max(ow,ew);
           int miny = min(ow,ew);
           if ( ( miny + rem/2 ) < maxy ){
-                cout << i+1; return;
+                ans1 =  i+1; break;
           }
       }
       else{
@@ -99,19 +106,53 @@ void solve() {
           int rem_o = rem-rem_e; 
           if (ew >= ow){ // even is maxy guy
               if ( ow + rem_o < ew){
-                  cout << i+1; return;
+                 ans1 =  i+1; break;
               }
           }
           else{
              if ( ew + rem_e < ow ){
-                  cout << i+1; return;
+                  ans1 =  i+1; break;
               }
           }
       }
-       //dbg(i,ew,ow);
   }
 
-  cout << 10; 
+
+  ew = 0; ow = 0; int ans2 = 10;
+  fr(i,0,9){
+    
+    if (s2[i] == '1'){
+        if (i%2) ow++;
+        else ew++;
+    }
+
+
+      // Game ends ?
+      int rem = 9-i;
+      if (i%2){// odd
+          int maxy = max(ow,ew);
+          int miny = min(ow,ew);
+          if ( ( miny + rem/2 ) < maxy ){
+                ans2 =  i+1; break;
+          }
+      }
+      else{
+          int rem_e = rem/2;
+          int rem_o = rem-rem_e; 
+          if (ew >= ow){ // even is maxy guy
+              if ( ow + rem_o < ew){
+                 ans2 =  i+1; break;
+              }
+          }
+          else{
+             if ( ew + rem_e < ow ){
+                  ans2 =  i+1; break;
+              }
+          }
+      }
+  }
+
+    cout << min(ans1,ans2);
 }
 
 signed main() {

@@ -47,11 +47,7 @@ void solve() {
   vi pages(n); fr(i,0,n-1) cin >> pages[i];
  
     vvi dp(n, vi(x+1,0));
- 
-    fr(i,0,x){
-        dp[0][i] = 0;
-    }
- 
+    
     fr(sum,0,x){
         if (prices[0] <= sum)
             dp[0][sum] = pages[0];

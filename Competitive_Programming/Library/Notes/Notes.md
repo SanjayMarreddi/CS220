@@ -998,6 +998,7 @@ So, be thorough with all the standard/classic DP Problems. All the remaining are
 Example: 
 `Main\Problem_Solving_Paradigms\3. DP\Practise_IB_Hubs_Rec_Mem\1.Coin_Change.cc  LINE 85`
 vs `Main\Problem_Solving_Paradigms\3. DP\Practise_IB_Hubs_Rec_Mem\3.Check_Subset_Sum_Iter.cc  LINE 69`
+- In some Bottom Up DP, Ordering of the for loops might also cause the difference in execution time and may yield TLE. Ex: [1](https://cses.fi/problemset/result/2569297/) vs [2](https://cses.fi/problemset/result/2569295/) 
 
 - If we are sure that, all the quantities are positive & they are very large, we can use , `unsigned long long` instead of `long long`
 - If we declare Vector with Initialisation in Global & take size of vector from INPUT in the Local Function, It gives unexpected errors since `n` gets random value in the beginning & the corresponding sized vector may be created.
