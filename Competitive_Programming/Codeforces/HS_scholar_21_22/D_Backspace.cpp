@@ -55,51 +55,21 @@ using namespace number_theory;
 // ----------------------------------------------------------------------------------------------------------------------//
 // int dp[n][n]; 
 
-map<int,int> ind;
-int maxy = INT_MIN;
-bool isSubSequence(string &str1, string &str2, int m, int n)
-{
-    int j = 0; 
-    for (int i = 0; i < n && j < m; i++)
-        if (str1[j] == str2[i])
-            { j++; ind[i]=1; maxy = max(maxy, i); }
-    return (j == m);
-}
-
 void solve() {
-  // memset(dp,-1, sizeof(dp));
-  ind.clear();
-  maxy = INT_MIN;
-  string a,b; cin >> a >> b;
-  
-  if (!isSubSequence(b,a,b.size(),a.size())){
-      cout << "NO";
-  }
-  else{
-      fr(i,0,a.size()-1){
-          
-          if (i > maxy){
-              break;
-          }
+  string s,t; cin >> s >> t;
+  int i = s.size()-1, j = t.size()-1;
 
-          if (ind[i] == 0) // element is missing
-          {
-              if (i-1 >=0 and ind[i-1] == 1 and a[i-1] != a[i]){ // But previous element is present.
-                  cout << "NO"; return;
-              }
-          }
-
-          if (ind[i] == 1) // element is present.
-          {
-              if (i+1 <= maxy and ind[i+1] == 0 and a[i+1] != a[i]){ // But previous element is present.
-                cout << "NO"; return;
-              }
-          }
+  while(i >= 0 and j >= 0){
+      if (s[i] == t[j]){
+          i--, j--;
       }
-
-      cout << "YES";
+      else{
+          i -= 2;
+      }
   }
-
+   
+  if (j == -1){ cout << "YES";}
+  else{ cout << "NO";}
 }
 
 signed main() {

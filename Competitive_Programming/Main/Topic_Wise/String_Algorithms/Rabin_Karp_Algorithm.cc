@@ -46,6 +46,7 @@ void RKsearch(string pat, string txt, int q){
         }
 
         // Calculate hash values for the next window of the text. Remove leading digit, add trailing digit
+        // Note that this way of updating Hash Values of substrings is known as ROLLING HASH.
         if (i < n-m ){
 
             t = ( d*( t - txt[i]*h ) + txt[i+m] ) % q;

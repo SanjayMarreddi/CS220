@@ -1209,6 +1209,21 @@ so, when using pre-written codes, make necessary changes according to the proble
 - Filling 2D DP in Trees can be tricky, Refer this classic [Example](https://codeforces.com/contest/161/submission/121837651).
 - Note that multiple answers are present while performing a BFS/DFS depending upon the order in which adjacent elements are considered.
 - Marking the colors of the nodes while traversing using BFS/DFS as `BLACK` (or some other thing) when a node is completely processed helps in optimising traversal of vertices in some algorithms. Refer BFS/DFS using_colors for clarity.
+- Some points to note when dealing with `Shortest Paths`:
+
+    shortest path - with no weights -> ( bfs always )
+
+    shortest path - with weights as 0/1 - > (0/1 bfs always )
+
+    shortest path - with any weights( without -ve edge cycle ) -> dijkstra always
+
+- When we are performing BFS/ MultiSource BFS for finding shortest path/similar quantity on Matrices/Grids,
+we rarely use `visited`. Instead we use `distance` using which we push the elements into the Queue.
+
+    Example1: Data_Structures\10.Graphs_and_Trees\Basics_and_Traversal\MultiSource_BFS_Ex2.cc
+
+    Example2: Data_Structures\10.Graphs_and_Trees\Basics_and_Traversal\Normal_BFS_for_Multi_Ex2.cc
+
 
 Binary Trees:
 - The AVERAGE space Complexity of PreOrder, PostOrder, InOrder Traversal in O(h) not O(n) for both Recursive/Iterative. where h = O(logn),
@@ -1336,3 +1351,28 @@ GCD Properties :
   To find, Multiplicative inverse of Q modulo M  use `Q_inv =  modpow(Q, M-2)`
 
 - Also, Many problems which take O(n^2) in bruteforce can cleverly be brought down to O(n) by performing Two traversals, One from `right to Left` & other one from `Left to right` & similar ways.
+
+- Sometimes, Problems where TLE is encountered & we know the range of answer we are trying to find, using Binary Search helps.
+[Example](https://leetcode.com/submissions/detail/528147416/).
+It also has a utility function that checks if a string is a subsequence of other. It is used quite often. We should be able to code it up faster in OA.
+    ```
+        // Check if str1 is a subsequence of str2.
+        bool isSubSequence(string str1, string str2){
+            int m = str1.size(), n = str2.size();
+            
+            int j = 0;
+            
+            // Iterate over the characters of bigger string. If any of its character matches with the current character of str1, increment index.
+            for (int i = 0; i < n && j < m; i++)
+                if (str1[j] == str2[i])
+                    j++;
+            
+            // It means all the characters of str1 are covered.
+            return (j == m);
+        }
+    ```
+- Many Matrix/Grid Problems can be solved very easily by just performing a simple DFS/BFS from some/all positions & keeping track of required value during traversal. [Example](https://leetcode.com/problems/count-sub-islands/submissions/). Understand the problem's solution very clearly since it helps in lot of similar problems.
+- Its not required that, whenever we see a word subsequence in the problem, we need to traverse all of them explicitly. In most of the cases,
+We can do it by clever observation & taking min/max while traversing the entire array once. [Example](https://leetcode.com/problems/maximum-alternating-subsequence-sum/submissions/)
+
+- When dealing with Long long, If we are adding any number, use `LL` suffix. Ex: `long long temp = 12121212123`, `temp += 1LL`. Else there may be overflow & Runtime error may occur. [Example](https://leetcode.com/problems/validate-binary-search-tree/submissions/)
