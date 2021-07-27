@@ -53,40 +53,31 @@ namespace number_theory{
 }
 using namespace number_theory;
 // ----------------------------------------------------------------------------------------------------------------------//
-// int dp[n][n]; 
 
 void solve() {
-    string s,t; cin >> s >> t; 
-    int n = s.size(), req = t.size();
+  int n; cin >> n;
+  vi a(n); fr(i,0,n-1) { cin >> a[i]; } int q; cin >> q; int no; cin >> no; int l,r,s,t;
 
-    fr(st,0,n-1){ // start positions
-        fr(r,0,n-1-st){ // No of right moves
-
-            int right = r;
-            int left = req-r-1;
-            int index = st;
-      
-            string curr = ""; 
-            curr += s[index];  // start element
-           
-            while(right-- and index < n-1 ){
-                index++;
-                curr += s[index];
-            }
-
-            while(left-- and index > 0){
-                index--;
-                curr += s[index];
-            }
+  // O(q*n*n)
+  while(q--){ cin >> l >> r >> s >> t; int ans = 0; l--, r--;
+     
+     fr(i, l, r-s+1){ // start point of subarrays.  
         
-            if (curr == t){ 
-                cout << "YES"; return;
-            }
-    
-        }
-    }
+        // We may use Prefix "and".
 
-    cout << "NO";
+        int andd = a[i];
+        fr(j,i+1, i+s-1){
+            andd &= a[j];
+        }
+
+        if (andd >= t){
+            ans++;
+        }
+
+     }
+      cout << ans << " " ;
+
+  }
 }
 
 signed main() {
@@ -95,7 +86,7 @@ signed main() {
 
     fastIO;
     int t = 1;
-    cin >>  t; 
+   // cin >>  t; 
     fr(T,1,t){
         //cout << "Case #" << T << ": ";
         solve();
@@ -103,7 +94,3 @@ signed main() {
     }
     return 0;
 }
-
-
-
-

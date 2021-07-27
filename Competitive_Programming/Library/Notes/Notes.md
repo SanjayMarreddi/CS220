@@ -1215,7 +1215,7 @@ so, when using pre-written codes, make necessary changes according to the proble
 
     shortest path - with weights as 0/1 - > (0/1 bfs always )
 
-    shortest path - with any weights( without -ve edge cycle ) -> dijkstra always
+    shortest path - with any weights( without -ve edge cycle ) -> (DFS with DP) / (BFS) / (dijkstra)
 
 - When we are performing BFS/ MultiSource BFS for finding shortest path/similar quantity on Matrices/Grids,
 we rarely use `visited`. Instead we use `distance` using which we push the elements into the Queue.
@@ -1223,6 +1223,7 @@ we rarely use `visited`. Instead we use `distance` using which we push the eleme
     Example1: Data_Structures\10.Graphs_and_Trees\Basics_and_Traversal\MultiSource_BFS_Ex2.cc
 
     Example2: Data_Structures\10.Graphs_and_Trees\Basics_and_Traversal\Normal_BFS_for_Multi_Ex2.cc
+    Also, We need NOT explicitly write down all the adjacent/ reachable cells of grid. We can directly use for loops :)
 
 
 Binary Trees:

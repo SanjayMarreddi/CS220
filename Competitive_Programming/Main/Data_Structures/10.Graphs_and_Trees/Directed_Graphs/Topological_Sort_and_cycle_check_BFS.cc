@@ -20,6 +20,7 @@ Print space separated integers representing topological order. Print -1, if grap
 using namespace std;
 
 // Similar to BFS
+// This is MORE efficent when compared to DFS.
 void topological_sort( vector< vector<int> > &graph, int n) {
 
     vector<int> in_degree(n+1, 0), result;

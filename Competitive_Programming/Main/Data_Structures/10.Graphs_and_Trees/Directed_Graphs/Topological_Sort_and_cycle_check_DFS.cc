@@ -6,6 +6,7 @@ using namespace std;
 list<int> result ;
 
 // We use DFS approach.
+// This is LESS efficent when compared to BFS. Use BFS.
 bool DFS(int vertex,   vector < vector<int> > graph, vector<bool> &visited, vector<bool> &recursion_stack)
 {   
     // Processing then node.

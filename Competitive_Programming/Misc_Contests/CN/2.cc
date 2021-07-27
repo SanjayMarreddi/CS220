@@ -53,40 +53,27 @@ namespace number_theory{
 }
 using namespace number_theory;
 // ----------------------------------------------------------------------------------------------------------------------//
-// int dp[n][n]; 
 
 void solve() {
-    string s,t; cin >> s >> t; 
-    int n = s.size(), req = t.size();
+  int n; cin >> n;
+  vi one(n); fr(i,0,n-1) { cin >> one[i]; }
+  int m; cin >> m;
+  vi two(m); fr(i,0,m-1) { cin >> two[i]; }
 
-    fr(st,0,n-1){ // start positions
-        fr(r,0,n-1-st){ // No of right moves
+  vvi dp(n+1, vi(m+1,0));
 
-            int right = r;
-            int left = req-r-1;
-            int index = st;
-      
-            string curr = ""; 
-            curr += s[index];  // start element
-           
-            while(right-- and index < n-1 ){
-                index++;
-                curr += s[index];
-            }
+  fr(i,1,n){
+      fr(j,1,m){
+          if (one[i-1] == two[j-1]){
+              dp[i][j] = 1 + dp[i-1][j-1];
+          }
+          else{
+              dp[i][j] = max(dp[i-1][j], dp[i][j-1]);
+          }
+      }
+  }
 
-            while(left-- and index > 0){
-                index--;
-                curr += s[index];
-            }
-        
-            if (curr == t){ 
-                cout << "YES"; return;
-            }
-    
-        }
-    }
-
-    cout << "NO";
+  cout << two.size()-dp[n][m];
 }
 
 signed main() {
@@ -95,7 +82,7 @@ signed main() {
 
     fastIO;
     int t = 1;
-    cin >>  t; 
+    //cin >>  t; 
     fr(T,1,t){
         //cout << "Case #" << T << ": ";
         solve();
@@ -103,7 +90,3 @@ signed main() {
     }
     return 0;
 }
-
-
-
-

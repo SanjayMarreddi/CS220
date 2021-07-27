@@ -53,40 +53,39 @@ namespace number_theory{
 }
 using namespace number_theory;
 // ----------------------------------------------------------------------------------------------------------------------//
-// int dp[n][n]; 
+
+
+vector<string> poss;
+map<pair<string,int>, string> dp;
+
+string construct(string s, int k){
+   
+   if (k < 0) return;
+   
+   if (dp.count({s,k}) > 0){
+       return dp[{s,k}];
+   }
+
+   if (k == 0){
+       poss.pb(s);
+   }
+   else{
+       for(int i = 0; i<s.size(); i++){
+           string tmp = "";
+           for(int j = 0; j<s.size(); j++){
+               if (i != j){ tmp+= s[j]; }
+           }
+           construct(tmp, k-1);
+       }
+   }
+}
+
 
 void solve() {
-    string s,t; cin >> s >> t; 
-    int n = s.size(), req = t.size();
-
-    fr(st,0,n-1){ // start positions
-        fr(r,0,n-1-st){ // No of right moves
-
-            int right = r;
-            int left = req-r-1;
-            int index = st;
-      
-            string curr = ""; 
-            curr += s[index];  // start element
-           
-            while(right-- and index < n-1 ){
-                index++;
-                curr += s[index];
-            }
-
-            while(left-- and index > 0){
-                index--;
-                curr += s[index];
-            }
-        
-            if (curr == t){ 
-                cout << "YES"; return;
-            }
-    
-        }
-    }
-
-    cout << "NO";
+  int k; string s; cin >> k >> s; 
+  construct(s,k);
+  sort(allr(poss));
+  cout << poss[0];
 }
 
 signed main() {
@@ -95,7 +94,7 @@ signed main() {
 
     fastIO;
     int t = 1;
-    cin >>  t; 
+    //cin >>  t; 
     fr(T,1,t){
         //cout << "Case #" << T << ": ";
         solve();
@@ -103,7 +102,3 @@ signed main() {
     }
     return 0;
 }
-
-
-
-

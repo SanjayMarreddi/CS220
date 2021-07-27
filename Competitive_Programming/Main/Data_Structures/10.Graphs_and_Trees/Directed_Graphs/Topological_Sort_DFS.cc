@@ -16,6 +16,7 @@ using namespace std;
 list<int> result ;
 
 // We need Stack Functionality
+// This is LESS efficent when compared to BFS. Use BFS.
 void DFS(int vertex, vector< vector<int> > adj_list , vector<bool> &visited, list<int> &result)
 {
     visited[vertex] = true;
