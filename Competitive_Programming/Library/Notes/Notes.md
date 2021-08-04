@@ -982,9 +982,29 @@ So, be thorough with all the standard/classic DP Problems. All the remaining are
                           -> Suffixes [ Top.sort order: n-1,n-2,...0 ],
                           -> Subarrays[ Top.sort order: increasing order of sizes of subarrays ], 
                           -> Subsets ( using Bitmasks )
+
+- In Dp, Once Recurrence is known and inorder to implement BOTTOM UP approach, Dont blindly write `for` loops.
+  See the Topological sorted order. Just simple observation of recurrence lets us find which quantity is to be computed first. 
+  One standard example : `dp[i][j] = dp[i+1][j-1];` dp[i + 1][j - 1] should be calculated before  dp[i][j]. That is, i is decreasing during the bottop-up dp implementation, and `j` is increasing or the dist between i and j is increasing, that's why :
+   ```
+   // Method-1:
+  // i is decreasing & dist is increasing
+   int len = str.size();
+   for (int i = len - 1; i >= 0; i--) {
+            for (int dist = 0; dist < len - i; dist++) {
+                int j = i+dist
+        }
+   }
+
+    // Method-2: (Intuitive)
+    // i is decreasing & j is increasing
+    for(int i = len-1; i >= 0; i--){    
+        for(int j = i; j < len; j++){          
+   ```
                            
 - DP subproblems when dealing with subsequences/substrings/subarrays:
     DP[i] -> Required quantity for the subsequences/substrings/subarrays that END/BEGIN at index `i` 
+- Many subarrray/substring problems can be solved using SLIDING WINDOW/ TWO POINTERS methods.
 
 - When ever we have more parameters in DP_states, try to think in a way similar to `/CP/References/DP_Notes_MIT/MIT6_006F11_lec22.pdf  Page-2`
 - Sometimes, DP problem seems very difficult to solve. They may be asking to find the set of quantities that give the maximum/ minium result. In such cases, First solve the problem of a simpler DP which is just finding the maximum result value first. Then we can just use the Parent pointer sort of thing using argmin/argmax and construct the entire required solution. 
@@ -1377,3 +1397,36 @@ It also has a utility function that checks if a string is a subsequence of other
 We can do it by clever observation & taking min/max while traversing the entire array once. [Example](https://leetcode.com/problems/maximum-alternating-subsequence-sum/submissions/)
 
 - When dealing with Long long, If we are adding any number, use `LL` suffix. Ex: `long long temp = 12121212123`, `temp += 1LL`. Else there may be overflow & Runtime error may occur. [Example](https://leetcode.com/problems/validate-binary-search-tree/submissions/)
+
+- When ever we encounter a question related to `Queries`, we either solve it using some sort of `PRECOMPUTATION (either Prefix/Suffix/DP/Someother)` or `Segment Trees/Fenwick Trees`
+
+- Given a string containing values separated by some delimeter (say `,`), Accessing each element using `getline, stringstream`:
+```
+string data = "my,name,is,sanjay";
+stringstream ss(data);
+string item;
+while( getline(ss, item, ',')){  // Dont forget to pass the delimeter as `char` i.e single character enclosed in ''
+    cout << item << "\n";
+}
+```
+- Serialize and Deserialize Binary Tree vs Binary Search Tree:  
+    - We can reconstruct BST by only using preorder(/postorder/levelorder) traversal.
+    - However, in the binary tree situation, we need to use preorder(/postorder/levelorder) + inorder to reconstruct the tree. If we want to directly construct BT, we have to use "#" or "null".
+    
+    - One of the ways a BST tree is different from a general binary tree is its structure is wholly dependent on the order in which the values are inserted. A string created from a preorder traversal of a BST will tell you the order in which the values were inserted into the tree. - Since you just need the order the values were inserted, you do not need to account for null nodes in the string with "#" or "null". Hence, the final string contains only the values and separators, which makes it the most compact possible.
+    - Note that the exact code used in binary tree can also be used in binary search tree too. But we used slightly different code since we are asked to do it in a compact form in the question.
+    - Refer: https://www.geeksforgeeks.org/serialize-deserialize-binary-tree/ and LEETCODE problems ( #297, #449 )
+
+- In most of the `Two Pointer` algo problems, `while( left < right )` or  `while( left <= right )` are sufficient. [Example](https://leetcode.com/problems/container-with-most-water/)
+
+- Rotating a matrix by 90 degrees/ similar problems can be solved by observation of how indices map after writing down the indices of original & rotated matrix. [Example](https://www.geeksforgeeks.org/rotate-a-matrix-by-90-degree-in-clockwise-direction-without-using-any-extra-space/#:~:text=16%2012%208%204-,Method%202%3A,-Approach%3A%20The%20approach)
+
+- In C language LEETCODE submissions, When returning a pointer from function, We need to explicitly set the value of this `returnSize` variable (if present) to the size of array being returned by `*returnSize = SomeVal`. [Example](https://leetcode.com/problems/counting-bits/submissions/)
+- Element from a vector can be removed by just using `v.erase(itr)`. If index is known, use `v.erase(v.begin()+i)` to remove the ith element from vector.
+- Case Conversion:
+    - transform : Performs a transformation on given array/string.
+    - toupper(int c) : Returns upper case version of character c. If c is already in uppercase, return c itself.
+    - tolower(int c) : Returns lower case version of character c. If c is already in lowercase, return c itself.
+        string su = "Jatin Goyal";
+        transform(su.begin(), su.end(), su.begin(), ::toupper);  // JATIN GOYAL
+        transform(su.begin(), su.end(), su.begin(), ::tolower);  // jatin goyal
