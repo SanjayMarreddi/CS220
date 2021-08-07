@@ -48,39 +48,47 @@ void solve(){
     ll count = 1;
     ll maxy =  pow(10, k)-1;
 
+    string useful = "";
+    fr(i,0,k-2){
+        useful += '9';
+    }
+
+    // Count of integers that have exactly k digits & are divisible by a[i] but the first digit is not equal to b[i] is:
+    // The count of integers that have exactly k digits & are divisible by a[i](  [99999..k times] /a[i] ), 
+    // minus the count of integers that have exactly k digits & have 1st digit as b[i] & are divisible by a[i] (  [ b[i]9999..k-1 times] /a[i] ), 
+    // plus  the count of integers that have exactly k digits & have 1st digit as b[i]-1  (only if b[i] > 0) & are divisible by a[i] 
+    // (  [ b[i]-1 9999..k-1 times] /a[i] ) 
+
     fr(i,0,(n/k)-1){    
         
         // All are zeroes
-        ll curr_count = 1; 
+        ll curr_count;
+        if (b[i] == 0){
+            curr_count = 0;
+        }
+        else{
+            curr_count = 1;
+        } 
 
         // Including the ones % by ai
         curr_count += (maxy/a[i])%mod;
-     
-        // Removing the ones that start with bi
-        ll copy_curr = curr_count;
-        fr(j, 0, copy_curr-1){
 
-            string str = to_string(a[i]*j);
-            ll first_digit;  
-            if  (str.size() == 1){
-
-                if (k > 1){
-                       first_digit = 0;
-                }
-                else{
-                    first_digit = stoi(str);
-                }
-             
-            }
-            else{
-                first_digit =  ( str[0]- '0');
-            }
-            
-            if ( first_digit == b[i] ){
-                curr_count--;
-            }
+        if ( b[i] > 0 ){
+             string useful1 = to_string(b[i]) + useful;
+             int one = stoi(useful1);
+             string useful2 = to_string(b[i]-1) + useful;
+             int two = stoi(useful2);
+            curr_count =   (curr_count - (one/a[i]) )% mod;
+            curr_count =   (curr_count + (two/a[i]) )% mod;
         }
-        count *= ( curr_count % mod );
+        else{
+             string useful1 = to_string(b[i]) + useful;
+             int one = stoi(useful1);
+             curr_count =   (curr_count - (one/a[i]) )% mod;
+        }
+
+        if (curr_count != 0)
+            count = ( count*curr_count )%mod;
     }
 
     cout << count % mod;

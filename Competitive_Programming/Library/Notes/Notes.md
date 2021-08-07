@@ -1430,3 +1430,104 @@ while( getline(ss, item, ',')){  // Dont forget to pass the delimeter as `char` 
         string su = "Jatin Goyal";
         transform(su.begin(), su.end(), su.begin(), ::toupper);  // JATIN GOYAL
         transform(su.begin(), su.end(), su.begin(), ::tolower);  // jatin goyal
+
+- When dealing with Linked Lists & Pointers, Dont forget allocating memory :)
+  Ex: `ListNode *HEAD = new ListNode();` not just `ListNode *HEAD;`. [Detailed Example](https://leetcode.com/problems/reverse-linked-list/)
+
+- Interesting Math Property:
+// Count of integers that have exactly k digits & are divisible by a[i] but the first digit is not equal to b[i] is:
+// The count of integers that have exactly k digits & are divisible by a[i](  [99999..k times] /a[i] ), 
+// minus the count of integers that have exactly k digits & have 1st digit as b[i] & are divisible by a[i] (  [ b[i]9999..k-1 times] /a[i] ), 
+// plus  the count of integers that have exactly k digits & have 1st digit as b[i]-1  (only if b[i] > 0) & are divisible by a[i] 
+// (  [ b[i]-1 9999..k-1 times] /a[i] ) 
+[Example](https://codeforces.com/contest/595/problem/B)
+
+- Divide & conquer is underrated. But it comes very handy in some cases. We usually use the appraoch when problem can be broken down into
+INDEPENDENT sub problems. [Example: Merge K sorted Linked Lists](https://leetcode.com/problems/merge-k-sorted-lists/submissions/)
+- Be careful with Global declarations of variables. At lines `1467-1468`, If we place   
+`int ans = 0, m = grid.size(), n = grid[0].size(), N = n, M = m;`  The values of M & N will not be updated. They remain `0`.
+    ```
+    class Solution {
+    public:
+        int cnt = 0, N, M;
+        void dfs(int i, int j, vector<vector<int>>& grid ){
+            if ( i < 0 or i >= M or j < 0 or j >= N  or grid[i][j] == 0){
+                return;
+            }
+            grid[i][j] = 0;
+            cnt++;
+            dfs(i,j+1,grid);
+            dfs(i+1,j,grid);
+            dfs(i-1,j,grid);
+            dfs(i,j-1,grid);
+        }
+        
+        
+        int maxAreaOfIsland(vector<vector<int>>& grid) {
+            int ans = 0, m = grid.size(), n = grid[0].size();
+            N = n, M = m;
+            for(int i = 0; i < m; i++){
+                for(int j = 0; j < n; j++){
+                    if (grid[i][j] == 1){
+                        dfs(i,j, grid); 
+                        ans = max(ans, cnt);
+                        cnt = 0;
+                    }
+                }
+            }
+            return ans;
+        }
+    };
+    ```
+- Count Divisors of n:  This approach takes O(sqrt(n)) time. 
+    ```
+    // C implementation of Naive method to count all
+    // divisors
+    #include <bits/stdc++.h>
+    using namespace std;
+
+    // function to count the divisors
+    int countDivisors(int n)
+    {
+        int cnt = 0;
+        for (int i = 1; i <= sqrt(n); i++) {
+            if (n % i == 0) {
+                // If divisors are equal,
+                // count only one
+                if (n / i == i)
+                    cnt++;
+
+                else // Otherwise count both
+                    cnt = cnt + 2;
+            }
+        }
+        return cnt;
+    }
+
+    /* Driver program to test above function */
+    int main()
+    {
+        printf("Total distinct divisors of 100 are : %d",
+            countDivisors(100));
+        return 0;
+    }
+
+    ```
+  - A number usually has its Factors/Divisors in pairs. To check whether the number of divisors of a number is EVEN/ODD, we can use this fact.
+    For perfect squares, due to the double divisor, they have Odd number of divisors but rest all Non perfect square numbers have Even number of divisors.
+    - Ex: Divisors come in pairs, like i=12 has divisors 1 and 12, 2 and 6, and 3 and 4. --> #divisors = 6
+    - Except when i is a square, like 36 has divisors 1 and 36, 2 and 18, 3 and 12, 4 and 9, and double divisor 6. -->  #divisors = 9
+  - Count of numbers in [1,n] which are perfect squares is just `sqrt(n)`.
+- Using `C` builtin `qsort`:
+    ```
+    // sorts an array in ascending order
+    int comparator (const void * p1, const void * p2){
+    return (*(int*)p1 - *(int*)p2);
+    }
+
+    int main() {
+        int n = 5;
+        int input[] = {3, 7, 5, 6, 2}; int sum = 0;
+        qsort(input, n, sizeof(int), comparator);
+    }
+    ```
