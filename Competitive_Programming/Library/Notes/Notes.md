@@ -1245,6 +1245,12 @@ we rarely use `visited`. Instead we use `distance` using which we push the eleme
     Example2: Data_Structures\10.Graphs_and_Trees\Basics_and_Traversal\Normal_BFS_for_Multi_Ex2.cc
     Also, We need NOT explicitly write down all the adjacent/ reachable cells of grid. We can directly use for loops :)
 
+- Bipartite Graph:
+    A bipartite graph (or bigraph) is a graph whose vertices can be divided into two disjoint and independent sets U and V such that every edge connects a vertex in U to one in V. Vertex sets U and V are usually called the parts of the graph.
+    - A graph is bipartite if and only if it does not contain an odd cycle.
+    - A graph is bipartite if and only if it is 2-colorable, (i.e. its chromatic number is less than or equal to 2).
+    - All trees are bipartite. 
+
 
 Binary Trees:
 - The AVERAGE space Complexity of PreOrder, PostOrder, InOrder Traversal in O(h) not O(n) for both Recursive/Iterative. where h = O(logn),
@@ -1531,3 +1537,68 @@ INDEPENDENT sub problems. [Example: Merge K sorted Linked Lists](https://leetcod
         qsort(input, n, sizeof(int), comparator);
     }
     ```
+
+## Estimating Efficiency of Algorithms:
+### 1. TIME COMPLEXITY
+
+- The answer to this question is directly related to the number of operations that are allowed to perform within a second. Most of the sites these days allow **10^8 operations per second**, only a few sites still allow 10^7 operations. After figuring out the number of operations that can be performed, search for the right complexity by looking at the constraints given in the problem.
+
+- In any problem in competitive programming, you are given the time limit for running of the program (usually 1 second) and the constraints on the input data. **Also, it is important to know that computers can perform about 10^7 to 10^8 individual operations per second.** Based on this, some estimates on the time complexity of your algorithm can be made, based on the constraints on the input:
+
+    - [Ref](https://blogtech.online/competitive-programming-and-time-complexity/):
+
+    Constraint   	Required Time Complexity
+
+    n <= 10	         O(n!)
+
+    n <= 20	         O(2^n)
+
+    n <= 500	     O(n^3)
+
+    n <= 5000	     O(n^2)
+
+    n <= 10^6	     O(n) or O(n log n)
+
+    n can be > 10^6	 O(1) or O(log n) (and in some cases O(√n))
+
+- Online Judge Restrictions: 
+    TLE comes because the Online judge has some restriction that it will not allow to process the instruction after a certain Time limit given by Problem setter the problem(1 sec).
+
+- Server Configuration:
+    The exact time taken by the code depends on the speed of the server, the architecture of the server, OS, and certainly on the complexity of the algorithm. So different servers like practice, CodeChef, SPOJ, etc., may have different execution speeds. By estimating the maximum value of N (N is the total number of instructions of your whole code), you can roughly estimate the TLE would occur or not in 1 sec. 
+
+- **[Imp]** Updated Table from [GFG](https://www.geeksforgeeks.org/overcome-time-limit-exceedtle/):
+
+    MAX value of N                    Time complexity
+
+    10^8                              O(N) Border case
+
+    10^7                              O(N) Might be accepted
+
+    10^6                              O(N) Perfect
+
+    10^5                              O(N * logN)
+
+    10^4                              O(N ^ 2)
+
+    10^2                              O(N ^ 3)
+
+    10^9                              O(logN) or Sqrt(N)
+
+- However, one important limitation of time complexity is that it hides the constant factors (recall that the time complexity is O(n) whether the loop executes n or 10n or 20n times). These constant factors, though usually small, may have a significant effect on the actual running time of the algorithm.
+- Additional [Ref.]( https://www.hackerearth.com/practice/basic-programming/complexity-analysis/time-and-space-complexity/tutorial/)
+
+### 2. SPACE COMPLEXITY:
+- Generally, all online platforms have the same memory limit as 256 MB. Users can only declare a **global 1-D array of size ~ 10^7**, not more than that. Or Multi Dimensional array of total ~ 10^7 elements.  Below is the exact analysis for `256 MB` 
+
+- Lets assume `int` takes 4 bytes:   
+
+    **256 MB = 256 x 10^6 bytes = 25.6 x 10^7 bytes ~  4 x ( 6 x 10^7 ) bytes. Can store ~ ( 6 x 10^7 ) `int` values i.e Integer array of size ` <= ( 6 x 10^7 )`.**
+
+    **4 MB   = 4 x 10^6 bytes =  can store 10^6 `int` values. i.e. Integer array of size `10^6`.**
+
+-  Maximum size of the array:       We must be knowing that the maximum size of array declared inside the main function is of the order of 10^6 but if you declare array globally then you can declare its size upto 10^7. [Ref.](https://www.geeksforgeeks.org/c-tricks-competitive-programming-c-11/)
+- If one declared a global 1-D array of size > 10^7, an error called the memory limit exceeded (`MLE`) occurs, some online platforms can also give an error as a Segmentation Fault(`SIGSEGV`). 
+- Note that trying to exceed the memory limit may sometimes result in other errors.
+- An example would be if users are using `malloc` in C to allocate memory. If malloc fails because the user is trying to allocate too much, it simply returns a null pointer which, unless checked for it, would probably cause a `Run Time Error` when the user tries to use it.
+- Similarly, trying to allocate too much memory in C++ using new would cause a `SIGABRT` and give `Run Time Error`.
