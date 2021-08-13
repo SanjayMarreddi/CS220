@@ -10,8 +10,8 @@ using namespace std;
 #define decimal(x) cout << fixed << setprecision(x)
 #define fr(i,a,b) for(int (i)=(a) ; (i) <= (b) ; ++(i))
 #define frr(i,a,b) for(int (i)=(a) ; (i) >= (b) ; --(i))
-#define trav(ele,container) for(auto (ele): (container))
-#define tra(ele,container) for(auto& (ele): (container)) 
+#define trav(ele,container) for(auto (ele): (container)) // Just gives a copy of the elements.
+#define tra(ele,container) for(auto& (ele): (container)) // Gives the reference to the elements.
 #define lbd(a,x) lower_bound(all((a)),(x)) - (a).begin()
 #define ubd(a,x) upper_bound(all((a)),(x)) - (a).begin()
 #define fastIO ios_base::sync_with_stdio(0); cin.tie(0);  cout.tie(0);
@@ -54,9 +54,55 @@ namespace number_theory{
 using namespace number_theory;
 // ----------------------------------------------------------------------------------------------------------------------//
 
+// https://codeforces.com/problemset/problem/377/A
+
+int n = 501, m = 501, k = 0;
+vector<vector<char>> grid(n, vector<char>(m));
+vector<vector<bool>> visited(n, vector<bool>(m));
+vpi dfsOrder;
+
+void dfs(int i, int j){
+    if ( i < 0 or i >= n or j <0 or j >= m or grid[i][j] == '#' or visited[i][j]){
+        return;
+    }
+    else{
+        dfsOrder.push_back({i,j});
+        visited[i][j] = 1;
+        dfs(i, j+1);
+        dfs(i+1, j);
+        dfs(i-1, j);
+        dfs(i, j-1);
+    }
+}
+
 void solve() {
-  int n; cin >> n;
-  vi v(n); fr(i,0,n-1) { cin >> v[i]; }
+  int s = 0 ; cin >> n >> m >> k;
+  fr(i,0,n-1){
+    fr(j,0,m-1){
+            cin >> grid[i][j];
+            if (grid[i][j] == '.') s++; 
+        } 
+  }
+
+    fr(i,0,n-1){
+        fr(j,0,m-1){
+            if (grid[i][j] == '.'){
+                dfs(i,j);
+                break;
+            }
+    }}
+
+    reverse(all(dfsOrder));
+    fr(i,0,k-1){
+        grid[dfsOrder[i].fi][dfsOrder[i].se] = 'X';
+    }
+
+    fr(i,0,n-1){
+        fr(j,0,m-1){
+            cout << grid[i][j] ;
+        }
+        cout << endl;
+    }
 }
 
 signed main() {
@@ -65,7 +111,7 @@ signed main() {
 
     fastIO;
     int t = 1;
-    cin >>  t; 
+    //cin >>  t; 
     fr(T,1,t){
         //cout << "Case #" << T << ": ";
         solve();

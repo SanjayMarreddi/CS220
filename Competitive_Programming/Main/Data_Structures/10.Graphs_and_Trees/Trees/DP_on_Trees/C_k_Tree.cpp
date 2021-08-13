@@ -10,8 +10,8 @@ using namespace std;
 #define decimal(x) cout << fixed << setprecision(x)
 #define fr(i,a,b) for(int (i)=(a) ; (i) <= (b) ; ++(i))
 #define frr(i,a,b) for(int (i)=(a) ; (i) >= (b) ; --(i))
-#define trav(ele,container) for(auto (ele): (container))
-#define tra(ele,container) for(auto& (ele): (container)) 
+#define trav(ele,container) for(auto (ele): (container)) // Just gives a copy of the elements.
+#define tra(ele,container) for(auto& (ele): (container)) // Gives the reference to the elements.
 #define lbd(a,x) lower_bound(all((a)),(x)) - (a).begin()
 #define ubd(a,x) upper_bound(all((a)),(x)) - (a).begin()
 #define fastIO ios_base::sync_with_stdio(0); cin.tie(0);  cout.tie(0);
@@ -52,11 +52,49 @@ namespace number_theory{
     int ncr (int n,int k)    { int ans = 1; if (k>n-k) {k=n-k;} fr(i,1,k) {ans*=(n-i+1); ans/=i; } return ans; }
 }
 using namespace number_theory;
-// ----------------------------------------------------------------------------------------------------------------------//
+// ----------------------------------------------------------------------------------------------------------------------// 
 
+// https://codeforces.com/contest/431/problem/C
 void solve() {
-  int n; cin >> n;
-  vi v(n); fr(i,0,n-1) { cin >> v[i]; }
+  int n, k, d; cin >> n >> k >> d;
+  vvi dp(n+1, vi(2));
+
+  // dp[n][is] — number of ways with length equals to n in k-tree, 
+  // where if is = 1 — there is exists edge with length at least d,
+  //          is = 0 — lengths of all edges less then d.
+
+  // Initial state.
+  dp[0][0] = 1;
+
+  // i - length of path.
+  fr(i, 1, n){
+
+      // We can include only the edges upto length d only. after that we wont include since we are evaluating dp[i-1][0]
+      // dp[i][0] = dp[i-1][0] + ... + dp[i-min(d-1,i)][0] 
+      fr(edges, 1, d-1){
+            if (i-edges >= 0) 
+                dp[i][0] = ( dp[i][0] + dp[i-edges][0] )%M;
+      }
+
+      // Now while evaluating dp[i-1][1], We have to include the possibility of having atleast 1 edge of length d.
+      // Dp[n][1] = Dp[n-1][1] + ... + Dp[n-min(d-1,n)][1] + (Dp[n-d][0] + Dp[n-d][1]) + ... + (Dp[n-min(n,k)][0] + Dp[n-min(n,k)][1]
+      
+      // Evaluating the possibilites using the subtrees i.e. we are not including edge of length atleast `d` now.
+      fr(edges, 1, d-1){
+            if (i-edges >= 0) 
+              dp[i][1] = ( dp[i][1] + dp[i-edges][1] )%M;
+      }
+
+      // Evaluating the possibilites by including an edge of length atleast `d` now.
+      // So the remaining sum can be done in any way (0/1)
+       fr(edges, d, k){
+            if (i-edges >= 0) 
+              dp[i][1] = ( dp[i][1] + ( dp[i-edges][0] + dp[i-edges][1] )% M ) % M;
+      }
+  }
+  
+  // Number of ways with length equals to n in k-tree, if there exists edge with length at least d.
+  cout << dp[n][1];
 }
 
 signed main() {
@@ -65,7 +103,6 @@ signed main() {
 
     fastIO;
     int t = 1;
-    cin >>  t; 
     fr(T,1,t){
         //cout << "Case #" << T << ": ";
         solve();

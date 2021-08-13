@@ -10,8 +10,8 @@ using namespace std;
 #define decimal(x) cout << fixed << setprecision(x)
 #define fr(i,a,b) for(int (i)=(a) ; (i) <= (b) ; ++(i))
 #define frr(i,a,b) for(int (i)=(a) ; (i) >= (b) ; --(i))
-#define trav(ele,container) for(auto (ele): (container))
-#define tra(ele,container) for(auto& (ele): (container)) 
+#define trav(ele,container) for(auto (ele): (container)) // Just gives a copy of the elements.
+#define tra(ele,container) for(auto& (ele): (container)) // Gives the reference to the elements.
 #define lbd(a,x) lower_bound(all((a)),(x)) - (a).begin()
 #define ubd(a,x) upper_bound(all((a)),(x)) - (a).begin()
 #define fastIO ios_base::sync_with_stdio(0); cin.tie(0);  cout.tie(0);
@@ -54,9 +54,39 @@ namespace number_theory{
 using namespace number_theory;
 // ----------------------------------------------------------------------------------------------------------------------//
 
+// https://codeforces.com/contest/1336/problem/A
+
+void eval(int s, int par, vvi &adjlist, vi &depths, vi &sizes, int lvl ){
+    depths[s] = lvl;
+    sizes[s] = 1;
+    for(auto c : adjlist[s]){
+        if ( c != par){
+            eval(c, s, adjlist, depths, sizes, lvl+1);
+            sizes[s] += sizes[c];
+        }
+    }
+}
+
 void solve() {
-  int n; cin >> n;
-  vi v(n); fr(i,0,n-1) { cin >> v[i]; }
+    int n, k; cin >> n >> k;  int u, v;
+    vvi adjlist(n); vi depths(n), sizes(n);
+    fr(i,1,n-1) { cin >> u >> v; u--, v--; adjlist[u].pb(v),adjlist[v].pb(u); }
+    eval(0,-1, adjlist, depths, sizes, 1);
+    
+    vi happiness;
+    fr(i,0,n-1){
+        happiness.pb(sizes[i] - depths[i]);
+    }
+
+    sort(allr(happiness)); int ans = 0;
+
+    // Out of n nodes, Choosing k nodes for industry is same as choosing n-k nodes for tourism.
+    // happiness[i] indicates the amount of contribution of the node `i` to the total happiness if we choose `i` to be a tourism city.
+    fr(i,1,n-k){
+        ans += happiness[i-1];
+    }
+
+    cout << ans;
 }
 
 signed main() {
@@ -65,7 +95,6 @@ signed main() {
 
     fastIO;
     int t = 1;
-    cin >>  t; 
     fr(T,1,t){
         //cout << "Case #" << T << ": ";
         solve();

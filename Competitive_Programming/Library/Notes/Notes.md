@@ -1004,7 +1004,13 @@ So, be thorough with all the standard/classic DP Problems. All the remaining are
                            
 - DP subproblems when dealing with subsequences/substrings/subarrays:
     DP[i] -> Required quantity for the subsequences/substrings/subarrays that END/BEGIN at index `i` 
-- Many subarrray/substring problems can be solved using SLIDING WINDOW/ TWO POINTERS methods.
+
+- Many subarrray/substring problems can be solved using SLIDING WINDOW/ TWO POINTERS methods/ Prefix Sums.
+
+- Some problems involving subarrays can be solved very cleverly using prefix sums. Once we find prefix sums,
+we group all the prefix sums based on their value. Since we need to select to indices (l,r) to make a subarray, we are likely to use `N^C_2` where `N` represents the number of prefix indices with same value.
+This type of relations are intutive if we are some how able to relate the answer (subarray) with prefixes. 
+[Example.](https://codeforces.com/problemset/problem/1398/C)
 
 - When ever we have more parameters in DP_states, try to think in a way similar to `/CP/References/DP_Notes_MIT/MIT6_006F11_lec22.pdf  Page-2`
 - Sometimes, DP problem seems very difficult to solve. They may be asking to find the set of quantities that give the maximum/ minium result. In such cases, First solve the problem of a simpler DP which is just finding the maximum result value first. Then we can just use the Parent pointer sort of thing using argmin/argmax and construct the entire required solution. 
@@ -1251,6 +1257,11 @@ we rarely use `visited`. Instead we use `distance` using which we push the eleme
     - A graph is bipartite if and only if it is 2-colorable, (i.e. its chromatic number is less than or equal to 2).
     - All trees are bipartite. 
 
+- Note that, In any Tree:
+    - The depth of node u is means there are dep_u nodes on the path (ROOT -> u)
+    - The size of the subtree rooted on node u means that there are siz_u nodes v that u is on the path (ROOT -> v)
+
+-  In many Problems of Graphs/ Trees, If we are asked to choose some number of nodes (say k) such that a given quantity (say Q) is Minimised/Maximised/similar.., One approach for solving those type of Qs is performing a BFS/DFS on the given Graph/ Tree and evaluating & storing some value ( that helps in evaluating Q ) using DYNAMIC PROGRAMMING during traversal. After that, we just perform relevant operations on the stored values & select the nodes appropriately. [Example](https://codeforces.com/problemset/problem/1336/A) 
 
 Binary Trees:
 - The AVERAGE space Complexity of PreOrder, PostOrder, InOrder Traversal in O(h) not O(n) for both Recursive/Iterative. where h = O(logn),
@@ -1602,3 +1613,58 @@ INDEPENDENT sub problems. [Example: Merge K sorted Linked Lists](https://leetcod
 - Note that trying to exceed the memory limit may sometimes result in other errors.
 - An example would be if users are using `malloc` in C to allocate memory. If malloc fails because the user is trying to allocate too much, it simply returns a null pointer which, unless checked for it, would probably cause a `Run Time Error` when the user tries to use it.
 - Similarly, trying to allocate too much memory in C++ using new would cause a `SIGABRT` and give `Run Time Error`.
+
+- While solving problems using BackTracking it is not compuslory to use `visited`. Sometimes we directly use a vector/array to store the **parts of results.** Example: `Main\Problem_Solving_Paradigms\1. Complete_Search\Problems\Subsets_of_array.cc`
+- Note that, In DFS on Grids, It's advisable to use `visited[i][j]` instead of altering the value at the `grid[i][j]` to avoid revisiting since it is easy to understand, implement and debug. [Example](https://codeforces.com/contest/377/problem/A).
+
+- Simple Tricks from LinkedIn post:
+    Must Known for a CP learner(Interview Prep. Oriented)
+
+    If input array is sorted then
+    - Binary search
+    - Two pointers
+
+    If asked for all permutations/subsets then
+    - Backtracking
+
+    If given a Tree/Graph then
+    - DFS
+    - BFS
+
+    If given a linked list then
+    - Two pointers
+
+    If recursion is banned then
+    - Stack
+
+    If must solve in-place then
+    - Swap corresponding values
+    - Store one or more different values in the same pointer
+
+    If asked for maximum/minumum subarray/subset/options then
+    - Dynamic programming/SLIDING WINDOW/ TWO POINTERS methods/ Prefix Sums.
+
+    If asked for top/least K items then
+    - Heap
+
+    If asked for common strings then
+    - Map
+    - Trie
+
+    Else
+    - Map/Set for O(1) time & O(n) space
+    - Sort input for O(nlogn) time and O(1) space
+
+- Transpose of a matrix is nothing but swapping the elements across the main diagonal. Notice the bounds of `for` loops in below code.
+  If we use two complete for loops, it has no effect on the matrix since each pair gets swapped twice.
+    ```
+    void transform(vector<vector<int>>& matrix) {
+            int n = matrix.size();
+            for(int i = 0; i <n; i++){                  //  i : (0,...n-1)
+                for(int j = i; j <n; j++){              //  j : (i,...n-1)
+                    swap(matrix[i][j], matrix[j][i]);
+                }
+            }
+    }
+    ```
+    Rotating a matrix by 90 degrees can be thought of as a Transpose of a matrix followed by Reflection ( Reversing the row elements.)

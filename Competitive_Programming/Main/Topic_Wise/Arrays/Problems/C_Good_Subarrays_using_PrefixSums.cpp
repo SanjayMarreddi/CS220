@@ -10,8 +10,8 @@ using namespace std;
 #define decimal(x) cout << fixed << setprecision(x)
 #define fr(i,a,b) for(int (i)=(a) ; (i) <= (b) ; ++(i))
 #define frr(i,a,b) for(int (i)=(a) ; (i) >= (b) ; --(i))
-#define trav(ele,container) for(auto (ele): (container))
-#define tra(ele,container) for(auto& (ele): (container)) 
+#define trav(ele,container) for(auto (ele): (container)) // Just gives a copy of the elements.
+#define tra(ele,container) for(auto& (ele): (container)) // Gives the reference to the elements.
 #define lbd(a,x) lower_bound(all((a)),(x)) - (a).begin()
 #define ubd(a,x) upper_bound(all((a)),(x)) - (a).begin()
 #define fastIO ios_base::sync_with_stdio(0); cin.tie(0);  cout.tie(0);
@@ -54,9 +54,27 @@ namespace number_theory{
 using namespace number_theory;
 // ----------------------------------------------------------------------------------------------------------------------//
 
+// https://codeforces.com/problemset/problem/1398/C
+
 void solve() {
-  int n; cin >> n;
-  vi v(n); fr(i,0,n-1) { cin >> v[i]; }
+  int n; cin >> n; string s; cin >> s;
+  int cnt = 0;
+  vi prefix(n+1);
+  
+  map<int,int> store;
+  fr(i,1,n){
+      prefix[i] += (prefix[i-1] +  ( s[i-1] - '0') ); 
+  }
+
+  fr(i, 0, n){
+    store[(prefix[i]-i)]++;
+  }
+
+  trav(e, store){
+      cnt += (e.se)*(e.se-1)/2;
+  }
+
+  cout << cnt;
 }
 
 signed main() {
