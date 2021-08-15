@@ -1012,6 +1012,9 @@ we group all the prefix sums based on their value. Since we need to select to in
 This type of relations are intutive if we are some how able to relate the answer (subarray) with prefixes. 
 [Example.](https://codeforces.com/problemset/problem/1398/C)
 
+- Note that Sometimes, even problems related to subarrays can be diverse. They can include any DS / Algo. 
+Ex : [DP/Prefixes/Suffixes + Stacks](https://leetcode.com/problems/maximum-subarray-min-product/) 
+
 - When ever we have more parameters in DP_states, try to think in a way similar to `/CP/References/DP_Notes_MIT/MIT6_006F11_lec22.pdf  Page-2`
 - Sometimes, DP problem seems very difficult to solve. They may be asking to find the set of quantities that give the maximum/ minium result. In such cases, First solve the problem of a simpler DP which is just finding the maximum result value first. Then we can just use the Parent pointer sort of thing using argmin/argmax and construct the entire required solution. 
 - In Bitmasks DP problems, One standard trick we use to evaluate `(S\x)` i.e. removing element `x` from the subset `S` given that `S` contains `x` is as follows:
@@ -1235,6 +1238,7 @@ so, when using pre-written codes, make necessary changes according to the proble
 - Filling 2D DP in Trees can be tricky, Refer this classic [Example](https://codeforces.com/contest/161/submission/121837651).
 - Note that multiple answers are present while performing a BFS/DFS depending upon the order in which adjacent elements are considered.
 - Marking the colors of the nodes while traversing using BFS/DFS as `BLACK` (or some other thing) when a node is completely processed helps in optimising traversal of vertices in some algorithms. Refer BFS/DFS using_colors for clarity.
+- Also note that in Tree/Graph problems where DP is required, sometimes passing/filling the DP[node] in TOPOLOGICAL SORTING order helps. [Example](https://leetcode.com/problems/largest-color-value-in-a-directed-graph/)  
 - Some points to note when dealing with `Shortest Paths`:
 
     shortest path - with no weights -> ( bfs always )
