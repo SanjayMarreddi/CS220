@@ -55,42 +55,49 @@ using namespace number_theory;
 // ----------------------------------------------------------------------------------------------------------------------//
 
 void solve() {
-  int n; cin >> n;
-  vi a(n); fr(i,0,n-1){ cin >> a[i]; }
-  if (a[0] == 1){
-      cout << n+1 << " ";
-      fr(i,1,n){
-          cout << i << " ";
-      }
-  }
-  else if (a[n-1] == 0){
-      fr(i,1,n){
-          cout << i << " ";
-      }
-      cout << n+1;
-  }
-  else{
-      fr(i,0,n-2){
+   string t; cin >> t;  map<char, int> store; string order = ""; map<char, int> fre;
+   frr(i,t.size()-1, 0) { 
+       fre[t[i]]++;
+       if (store[t[i]] == 0){
+           order += t[i];
+           store[t[i]]++;
+       }
+   }
+   reverse(all(order)); int len = 0;
+   fr(i, 0, order.size()-1){
+       int curr = 0;
+       int curfre = fre[order[i]];
+       if ( curfre % (i+1) ){
+           cout << -1; return;
+       }
+       else{
+           curr =  ( curfre/(i+1) );
+       }
+       len += curr;
+   }
 
-          if (a[i] == 0 and a[i+1] == 1){
+   string s = ""; map<char, int> ffreq;
+   fr(i,0,len-1){
+       s += t[i];
+       ffreq[t[i]]++;
+   }
 
-              fr(j,1,i+1){
-                  cout << j << " ";
-              }
-              
-              cout << n+1 << " ";
+   string ans = s;
 
-              fr(j, i+2, n){
-                  cout << j << " ";
-              }
+   // Crosschecking the constructed string.
+   string finalt = "";
+   finalt += s;
+   trav(e, order){
+        s.erase(remove(s.begin(), s.end(), e), s.end());
+        finalt += s;
+   }
 
-              return;
-          }
-      }
-     
-     cout << -1;
-  }
-
+   if (finalt == t){
+       cout << ans << " " << order;
+   }
+   else{
+       cout << -1;
+   }
 }
 
 signed main() {

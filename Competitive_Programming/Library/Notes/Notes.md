@@ -884,7 +884,7 @@ v.erase(itr);                   // Removes the single element at given position,
 v.erase(start_itr, end_itr);    // Removes a range of elements ([start_itr, end_itr))
 
 ```
-IMPORTANT : Remove an element from the vector using an element.
+IMPORTANT : Remove an element from the vector/string using an element.
 - std::remove : It doesn’t actually delete elements from the container but only shunts non-deleted elements forwards on top of deleted elements.
 - std::remove does not actually erase the element from the container, but it does return the new end iterator which can be passed to container_type::erase to do the REAL  removal of the extra elements that are now at the end of the container.
 
@@ -1672,3 +1672,97 @@ INDEPENDENT sub problems. [Example: Merge K sorted Linked Lists](https://leetcod
     }
     ```
     Rotating a matrix by 90 degrees can be thought of as a Transpose of a matrix followed by Reflection ( Reversing the row elements.)
+
+-  `std::iota` in C++ STL usage:
+
+    Store increasing sequence:
+    Assigns to every element in the range [first, last] successive values of val, as if incremented with ++val after each element is written.
+
+    Template :
+    void iota (ForwardIterator first, ForwardIterator last, T val);
+
+    Parameters :
+    first, last
+    Forward iterators to the initial and final positions of the sequence
+    to be written. The range used is [first, last), which contains all the
+    elements between first and last, including the element pointed by
+    first but not the element pointed by last.
+
+    val :
+    Initial value for the accumulator. 
+
+    Return Type :
+    None
+
+    ```
+    // CPP program to illustrate
+    // std :: iota
+    #include <iostream> // std::cout
+    #include <numeric> // std::iota
+    
+    // Driver code
+    int main()
+    {
+        int numbers[10];
+        // Initailising starting value as 100
+        int st = 100;
+    
+        std::iota(numbers, numbers + 10, st);
+    
+        std::cout << "Elements are :";
+        for (auto i : numbers)
+            std::cout << ' ' << i;
+        std::cout << '\n';
+    
+        return 0;
+    }
+
+    ```
+    Output:
+
+    Elements are : 100 101 102 103 104 105 106 107 108 109
+
+- Heap Reference:
+
+    - `std::pop_heap` : Pop element from heap range
+    Rearranges the elements in the heap range [first,last) in such a way that the part considered a heap is shortened by one: The element with the highest value is moved to (last-1).
+
+    While the element with the highest value is moved from first to (last-1) (which now is out of the heap), the other elements are reorganized in such a way that the range [first,last-1) preserves the properties of a heap.
+
+    A range can be organized into a heap by calling make_heap. After that, its heap properties are preserved if elements are added and removed from it using push_heap and pop_heap, respectively.
+
+    ```
+    // range heap example
+    #include <iostream>     // std::cout
+    #include <algorithm>    // std::make_heap, std::pop_heap, std::push_heap, std::sort_heap
+    #include <vector>       // std::vector
+
+    int main () {
+    int myints[] = {10,20,30,5,15};
+    std::vector<int> v(myints,myints+5);
+
+    std::make_heap (v.begin(),v.end());
+    std::cout << "initial max heap   : " << v.front() << '\n';
+
+    std::pop_heap (v.begin(),v.end()); v.pop_back();
+    std::cout << "max heap after pop : " << v.front() << '\n';
+
+    v.push_back(99); std::push_heap (v.begin(),v.end());
+    std::cout << "max heap after push: " << v.front() << '\n';
+
+    std::sort_heap (v.begin(),v.end());
+
+    std::cout << "final sorted range :";
+    for (unsigned i=0; i<v.size(); i++)
+        std::cout << ' ' << v[i];
+
+    std::cout << '\n';
+
+    return 0;
+
+    // Output
+    initial max heap   : 30
+    max heap after pop : 20
+    max heap after push: 99
+    final sorted range : 5 10 15 20 99
+    ```

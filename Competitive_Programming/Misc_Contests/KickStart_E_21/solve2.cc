@@ -56,40 +56,27 @@ using namespace number_theory;
 
 void solve() {
   int n; cin >> n;
-  vi a(n); fr(i,0,n-1){ cin >> a[i]; }
-  if (a[0] == 1){
-      cout << n+1 << " ";
-      fr(i,1,n){
-          cout << i << " ";
-      }
-  }
-  else if (a[n-1] == 0){
-      fr(i,1,n){
-          cout << i << " ";
-      }
-      cout << n+1;
-  }
-  else{
-      fr(i,0,n-2){
-
-          if (a[i] == 0 and a[i+1] == 1){
-
-              fr(j,1,i+1){
-                  cout << j << " ";
-              }
-              
-              cout << n+1 << " ";
-
-              fr(j, i+2, n){
-                  cout << j << " ";
-              }
-
-              return;
+  vi v(n); fr(i,0,n-1) { v[i] = i+1; }
+  
+  ld exp = 0;
+  do{
+      ld cur = 1;
+      int prev = v[0];
+      fr(i,1,n-1){
+          if (v[i] > prev ){
+              prev = v[i];
+              cur++;
+          }
+          else{
+              // discard
           }
       }
-     
-     cout << -1;
-  }
+
+      exp += (cur)/n;
+  }while(next_permutation(all(v)));
+
+  decimal(6);
+  cout << exp;
 
 }
 
@@ -101,7 +88,7 @@ signed main() {
     int t = 1;
     cin >>  t; 
     fr(T,1,t){
-        //cout << "Case #" << T << ": ";
+        cout << "Case #" << T << ": ";
         solve();
         cout << "\n";
     }

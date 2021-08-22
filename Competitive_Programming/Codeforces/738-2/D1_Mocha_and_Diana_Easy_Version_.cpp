@@ -54,47 +54,102 @@ namespace number_theory{
 using namespace number_theory;
 // ----------------------------------------------------------------------------------------------------------------------//
 
-vi tmp;
 
-void dfs(int vertex, vvi &graph, vi &visited){
+class UnionFind {
 
-     visited[vertex] = true;
-     tmp.pb(vertex);
- 
-    for (auto i : graph[vertex]){
-        if (!visited[i]){   
-            dfs(i, graph, visited);
+public:
+
+    // link[i] : The next element of `i` in the chain or the parent of node `i` 
+    // size[i] : The size of the corresponding set where `i` is representative. Size should be Initialised with 1.
+    vector<int> link, size;
+    int distinctComponents;
+
+    UnionFind(int n) {
+        // Initially all 'n' nodes are in different components.
+        // components have values from 0 to n-1
+	    distinctComponents = n;
+        for(int i = 0; i <n; i++){
+            link.push_back(i);
         }
+        size = vector<int>(n,1);
     }
-    
-}
+
+    // Unites two nodes by linking small tree root to large tree root.
+    // Also Returns true when two nodes 'a' and 'b' are initially in different components. Otherwise returns false.
+    bool unite(int a, int b) {
+
+        int ParentA = find(a);
+        int ParentB = find(b);
+        if (ParentA == ParentB){
+            return false;
+        }
+        
+        // This helps in making union by rank.
+        if (size[ParentA] < size[ParentB])  
+            swap(ParentA,ParentB);
+            
+        size[ParentA] += size[ParentB];
+        link[ParentB] = ParentA;
+        distinctComponents--;
+        return true;
+     }
+
+    // Returns what component does the node 'x' belong to using Path Compression.
+    int find(int x) {
+        if (x != link[x])
+            link[x] = find(link[x]) ;
+        return link[x];
+    }
+
+    // Are all nodes united into a single component?
+    bool united() {
+        return distinctComponents == 1;
+    }
+};
+
+// Ref: https://codeforces.com/blog/entry/93898
 
 void solve() {
-  int n, m1, m2; cin >> n >> m1 >> m2;
-  vvi graph1(n), graph2(n); int a, b;   
-  fr(i,0,m1-1) { cin >> a >> b; a--, b--; graph1[a].pb(b); graph1[b].pb(a);  }
-  fr(i,0,m2-1) { cin >> a >> b; a--, b--; graph2[a].pb(b); graph2[b].pb(a);  }
+  int n, m1, m2; cin >> n >> m1 >> m2; vvi edges1, edges2; int a,b;
+  fr(i,0,m1-1) { cin >> a >> b;  edges1.pb({a,b}); }
+  fr(i,0,m2-1) { cin >> a >> b;  edges2.pb({a,b}); }
 
-  vi visited1(n), visited2(n);
-  vvi comp1, comp2;
-  fr(i,0,n-1){
-      if (!visited1[i]){
-          dfs(i, graph1, visited1);
-          comp1.pb(tmp);
-          tmp.clear();
-      }
-  }
-  
-  tmp.clear();
-  fr(i,0,n-1){
-      if (!visited2[i]){
-          dfs(i, graph2, visited2);
-          comp2.pb(tmp);
-          tmp.clear();
-      }
-  }
+    // Calling class.
+    UnionFind uf1(n+1);
 
-  dbg(comp1, comp2);
+    // Custom code
+    for(auto e : edges1){
+        if (uf1.find(e[0]) != uf1.find(e[1])){
+            uf1.unite(e[0], e[1]);
+        }
+    }
+
+    // Calling class.
+    UnionFind uf2(n+1);
+
+    // Custom code
+    for(auto e : edges2){
+        if (uf2.find(e[0]) != uf2.find(e[1])){
+            uf2.unite(e[0], e[1]);
+        }
+    }
+
+    int ans = 0; vvi ansEdges;
+    fr(i, 1, n){
+        fr(j, i+1, n){
+            if ( uf1.find(i) != uf1.find(j) and uf2.find(i) != uf2.find(j) ){
+                ans++;
+                uf1.unite(i,j);
+                uf2.unite(i,j);
+                ansEdges.pb({i,j});
+            }
+        }
+    }
+
+    cout << ans << endl;
+    trav(e, ansEdges){
+        cout << e[0] << " " << e[1] << endl;
+    }
 }
 
 signed main() {
@@ -106,7 +161,6 @@ signed main() {
     fr(T,1,t){
         //cout << "Case #" << T << ": ";
         solve();
-        cout << "\n";
     }
     return 0;
 }

@@ -54,9 +54,134 @@ namespace number_theory{
 using namespace number_theory;
 // ----------------------------------------------------------------------------------------------------------------------//
 
+// https://codedriints.io/contempsts/icpc-amritapuri-2020-regional-round/problems/hackerland
+
+class UnionFind {
+
+public:
+
+    // link[i] : The next element of `i` in the chain or the parent of node `i` 
+    // size[i] : The size of the corresponding set where `i` is representative. Size should be Initialised with 1.
+    vector<int> link, size;
+    int distinctComponents;
+
+    UnionFind(int n) {
+        // Initially all 'n' nodes are in different components.
+        // components have values from 0 to n-1
+	    distinctComponents = n;
+        for(int i = 0; i <n; i++){
+            link.push_back(i);
+        }
+        size = vector<int>(n,1);
+    }
+
+    // Unitemps two nodes by linking small tree root to large tree root.
+    // Also Returns true when two nodes 'a' and 'b' are initially in different components. Otherwise returns false.
+    bool unite(int a, int b) {
+
+        int ParentA = find(a);
+        int ParentB = find(b);
+        if (ParentA == ParentB){
+            return false;
+        }
+        
+        // This helps in making union by rank.
+        if (size[ParentA] < size[ParentB])  
+            swap(ParentA,ParentB);
+            
+        size[ParentA] += size[ParentB];
+        link[ParentB] = ParentA;
+        distinctComponents--;
+        return true;
+     }
+
+    // Returns what component does the node 'x' belong to using Path Compression.
+    int find(int x) {
+        if (x != link[x])
+            link[x] = find(link[x]) ;
+        return link[x];
+    }
+
+    // Are all nodes unitempd into a single component?
+    bool unite() {
+        return distinctComponents == 1;
+    }
+};
+
+vector<int> sieveOpt1(int n) {
+    vector<bool> is_prime(n+1, true);
+    is_prime[0] = is_prime[1] = false;
+    for (int i = 2; i * i <= n; i++) {
+        if (is_prime[i]) {
+            for (int j = i * i; j <= n; j += i)
+                is_prime[j] = false;
+        }
+    }
+    vector<int> primesList;
+    for (int i = 2; i <= n; i++) {
+        if (is_prime[i])
+            primesList.push_back(i);
+    }
+    return primesList;
+}
+
+vector<int> pr;
+
 void solve() {
-  int n; cin >> n;
-  vi v(n); fr(i,0,n-1) { cin >> v[i]; }
+
+    int n; cin >> n; vi r(n);
+    fr(i,0,n-1) { cin >> r[i]; }
+
+    if( n==1 ){ cout << 0; return; }
+
+    // 1s should be handled separatemply since it has gcd 1 with every number.
+    int num = count(all(r),1);
+
+    // Removing the duplicatemp elements since they are anyhow connectempd with themselves.
+    sort(all(r)); r.erase(unique(all(r)),r.end());
+
+    // Storing the indices of elements to ease the lookup.
+    vi id(r.back()+1,-1);
+    fr(i,0,r.size()-1) id[r[i]]=i;
+
+    // Now, the UF is initialised with the `number` of unique elements.
+    n = r.size(); 
+    UnionFind uf(n);
+
+    // Combining the components if their GCD > 1 
+    tra(e,pr){
+        
+        if ( e>r.back() )
+            break; 
+
+        vi temp;
+
+        // Storing all multiples of prime `e` in temp.
+        for(int j=e;j<=r.back();j+=e) 
+            if(id[j]!=-1)
+                temp.pb(id[j]);
+
+        // Since they have gcd > 1 now we combine all the elements in temp into a single component.
+        if (temp.size())
+            fr(i,1,temp.size()-1) 
+                uf.unite(temp[i],temp[i-1]);
+    }
+
+    // Counting number of components.
+    fr(i,0,n-1) 
+        if(r[i]!=1)
+         num+=uf.find(i)==i; 
+
+    // Check for presence of multiples of 2/3.
+    bool two=0,three=0;
+    fr(i,0,n-1) 
+        two|=r[i]%2==0,three|=r[i]%3==0;
+
+    if(num==1){ cout << 0; return; }
+
+    // Multiplying the representative of the component is sufficient when connecting the components together.
+    // Multyplying with 2/3 yields min cost than anyother numbers.
+    cout << min((num-two)*2,(num-three)*3);
 }
 
 signed main() {
@@ -66,6 +191,7 @@ signed main() {
     fastIO;
     int t = 1;
     cin >>  t; 
+    pr = sieveOpt1(1e6);
     fr(T,1,t){
         //cout << "Case #" << T << ": ";
         solve();
